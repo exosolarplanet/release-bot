@@ -46,11 +46,12 @@ async function createBranch() {
         owner: 'exosolarplanet',
         repo: repoName,
         path: 'helm/Chart.yaml'
-    }).then(result => {
-        // content will be base64 encoded
-        const content = Buffer.from(result.data.content, 'base64').toString()
-        console.log(content)
-      });
+    })
+    // .then(result => {
+    //     // content will be base64 encoded
+    //     const content = Buffer.from(result.data.content, 'base64').toString()
+    //     console.log(content)
+    //   });
 }
 
 createBranch();
