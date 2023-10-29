@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
 const { Octokit } = require('octokit');
+const YAML = require('yaml');
 
 async function createBranch() {
     const octokit = new Octokit({ 
@@ -53,8 +54,11 @@ async function createBranch() {
     .then(result => {
         // content will be base64 encoded
         const content = Buffer.from(result.data.content, 'base64').toString()
-        console.log(content)
+        // console.log(content)
       });
+
+    let contentYaml = YAML.parse(content);
+    console.log(contentYaml);
 }
 
 createBranch();
