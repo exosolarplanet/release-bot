@@ -25,7 +25,7 @@ try {
   const ref = octokit.rest.git.getRef({
     owner: 'exosolarplanet',
     repo: repoName,
-    ref: 'refs/heads/main'
+    ref: 'heads/main'
   });
 
   console.log(ref);
