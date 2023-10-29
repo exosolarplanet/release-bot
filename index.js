@@ -40,7 +40,7 @@ async function createPr() {
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
-      })
+      });
 
     }catch{
         core.setFailed(error.message);
