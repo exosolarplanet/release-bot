@@ -16,10 +16,25 @@ try {
   const artifactoryPath = core.getInput('artifactory_path');
   console.log(`Artifactory path is: ${artifactoryPath}`);
 
+  const payloadJson = github.context.payload;
+  const repoName = payloadJson.repository.name;
 
   const payload = JSON.stringify(github.context.payload, undefined, 2);
   console.log(`The event payload: ${payload}`);
+
+  const ref = octokit.rest.git.getRef({
+    owner: 'exosolarplanet',
+    repo: repoName,
+    ref: 'refs/heads/main'
+  });
+
+  console.log(ref);
+
 //   octokit.rest.git.createRef({
+//     owner: 'exosolarplanet',
+//     repo: repoName,
+//     ref: 'refs/heads/pr-branch',
+
 
 //   })
 
