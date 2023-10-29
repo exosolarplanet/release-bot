@@ -54,7 +54,7 @@ async function createBranch() {
         // content will be base64 encoded
         const content = Buffer.from(result.data.content, 'base64').toString()
         let contentYaml = YAML.parse(content);
-        console.log(contentYaml);
+        console.log(contentYaml.name);
 
         // console.log(content)
       });
