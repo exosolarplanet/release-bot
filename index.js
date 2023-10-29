@@ -15,6 +15,14 @@ try {
 
   const artifactoryPath = core.getInput('artifactory_path');
   console.log(`Artifactory path is: ${artifactoryPath}`);
+
+
+  const payload = JSON.stringify(github.context.payload, undefined, 2);
+  console.log(`The event payload: ${payload}`);
+//   octokit.rest.git.createRef({
+
+//   })
+
 }catch{
     core.setFailed(error.message);
     octokit.setFailed(error.message);
