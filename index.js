@@ -22,13 +22,13 @@ try {
   const payload = JSON.stringify(github.context.payload, undefined, 2);
 //   console.log(`The event payload: ${payload}`);
 
-  const { data } = octokit.rest.git.getRef({
+  const response = octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
     owner: 'exosolarplanet',
     repo: repoName,
     ref: 'heads/main'
-  });
+  })
 
-  console.log(data);
+  console.log(response);
 
 //   octokit.rest.git.createRef({
 //     owner: 'exosolarplanet',
