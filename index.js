@@ -20,9 +20,6 @@ async function createBranch() {
     const repoName = payloadJson.repository.name;
     console.log(`Repository name is: ${repoName}`);
 
-    const payload = JSON.stringify(github.context.payload, undefined, 2);
-    //   console.log(`The event payload: ${payload}`);
-
     const response = octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
         owner: 'exosolarplanet',
         repo: repoName,
@@ -53,8 +50,7 @@ async function createBranch() {
         // content will be base64 encoded
         const content = Buffer.from(result.data.content, 'base64').toString()
         console.log(content)
-      })
-
+      });
 }
 
 createBranch();
