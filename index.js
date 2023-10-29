@@ -29,20 +29,27 @@ async function createBranch() {
     const sha = (await response).data.object.sha;
     console.log(`SHA is: ${sha}`);
 
-    const createBranch = octokit.request('POST /repos/{owner}/{repo}/git/refs', {
+    // const createBranch = octokit.request('POST /repos/{owner}/{repo}/git/refs', {
+    //     owner: 'exosolarplanet',
+    //     repo: repoName,
+    //     ref: 'refs/heads/pr-branch',
+    //     sha: sha,
+    //     headers: {
+    //       'X-GitHub-Api-Version': '2022-11-28'
+    //     }
+    // });
+
+    // const newBranch = (await createBranch).data;
+    // console.log(newBranch);
+
+    await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
         owner: 'exosolarplanet',
         repo: repoName,
-        ref: 'refs/heads/pr-branch',
-        sha: sha,
+        path: 'helm/Chart.yaml',
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
-    });
-
-    const newBranch = (await createBranch).data;
-    console.log(newBranch);
-
-    octokit.repos.getContent();
+      });
     // .then(result => {
     //     // content will be base64 encoded
     //     const content = Buffer.from(result.data.content, 'base64').toString()
