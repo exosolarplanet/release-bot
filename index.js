@@ -19,6 +19,7 @@ async function createPr() {
 
     const payloadJson = github.context.payload;
     const repoName = payloadJson.repository.name;
+    console.log(`Repository name is: ${repoName}`);
 
     const payload = JSON.stringify(github.context.payload, undefined, 2);
     //   console.log(`The event payload: ${payload}`);
@@ -27,7 +28,7 @@ async function createPr() {
         owner: 'exosolarplanet',
         repo: repoName,
         ref: 'heads/main'
-    }).then()
+    });
 
     const sha = (await response).data.object.sha;
     console.log(`SHA is: ${sha}`);
