@@ -35,7 +35,7 @@ async function createBranch() {
     const createBranch = octokit.request('POST /repos/{owner}/{repo}/git/refs', {
         owner: 'exosolarplanet',
         repo: repoName,
-        ref: 'heads/pr-branch',
+        ref: 'refs/heads/pr-branch',
         sha: sha,
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
