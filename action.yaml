@@ -1,0 +1,15 @@
+name: 'Hello World'
+description: 'Greet someone and record the time'
+inputs:
+  image_name:  # id of input
+    description: 'image name'
+    required: true
+  image_version:
+    description: 'image version'
+    required: true
+  artifactory_path:
+    description: 'Artifactory path'
+    required: true
+runs:
+  using: 'node20'
+  main: 'index.js'
