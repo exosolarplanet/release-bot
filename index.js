@@ -29,7 +29,7 @@ async function createPr() {
         ref: 'heads/main'
     }).then()
 
-    console.log((await response));
+    console.log((await response).data.object.sha);
 
     //   octokit.rest.git.createRef({
     //     owner: 'exosolarplanet',
