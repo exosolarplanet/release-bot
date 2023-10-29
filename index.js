@@ -41,9 +41,9 @@ async function createPr() {
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
-      });
+    });
 
-    const newBranch = (await response).data;
+    const newBranch = (await createBranch).data;
     console.log(data);
 
     }catch{
