@@ -49,12 +49,12 @@ async function createBranch() {
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
+      })
+    .then(result => {
+        // content will be base64 encoded
+        const content = Buffer.from(result.data.content, 'base64').toString()
+        console.log(content)
       });
-    // .then(result => {
-    //     // content will be base64 encoded
-    //     const content = Buffer.from(result.data.content, 'base64').toString()
-    //     console.log(content)
-    //   });
 }
 
 createBranch();
