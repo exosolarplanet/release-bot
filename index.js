@@ -45,7 +45,7 @@ async function createBranch() {
     const newBranch = (await createBranch).data;
     console.log(newBranch);
 
-    await octokit.repos.getContent({
+    octokit.repos.getContent({
         owner: 'exosolarplanet',
         repo: repoName,
         path: 'helm/Chart.yaml'
