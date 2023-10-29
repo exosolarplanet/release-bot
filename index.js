@@ -2,7 +2,7 @@ const core = require('@actions/core');
 const github = require('@actions/github');
 const { Octokit } = require('octokit');
 
-async function createPr() {
+async function createBranch() {
     const octokit = new Octokit({ 
         auth: process.env.token,
     });
@@ -35,7 +35,7 @@ async function createPr() {
     const createBranch = octokit.request('POST /repos/{owner}/{repo}/git/refs', {
         owner: 'exosolarplanet',
         repo: repoName,
-        ref: 'refs/heads/pr-branch',
+        ref: 'heads/pr-branch',
         sha: sha,
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
@@ -45,6 +45,16 @@ async function createPr() {
     const newBranch = (await createBranch).data;
     console.log(newBranch);
 
+    await octokit.repos.getContent({
+        owner: 'exosolarplanet',
+        repo: repoName,
+        path: 'helm/Chart.yaml'
+    }).then(result => {
+        // content will be base64 encoded
+        const content = Buffer.from(result.data.content, 'base64').toString()
+        console.log(content)
+      })
+
 }
 
-createPr();
+createBranch();
