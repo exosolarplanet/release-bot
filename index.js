@@ -28,7 +28,7 @@ try {
     ref: 'heads/main'
   });
 
-  console.log(ref);
+  console.log(ref.payload);
 
 //   octokit.rest.git.createRef({
 //     owner: 'exosolarplanet',
