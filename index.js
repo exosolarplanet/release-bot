@@ -42,11 +42,7 @@ async function createBranch() {
     const newBranch = (await createBranch).data;
     console.log(newBranch);
 
-    octokit.repos.getContent({
-        owner: 'exosolarplanet',
-        repo: repoName,
-        path: 'helm/Chart.yaml'
-    })
+    octokit.repos.getContent();
     // .then(result => {
     //     // content will be base64 encoded
     //     const content = Buffer.from(result.data.content, 'base64').toString()
