@@ -20,15 +20,15 @@ try {
   const repoName = payloadJson.repository.name;
 
   const payload = JSON.stringify(github.context.payload, undefined, 2);
-  console.log(`The event payload: ${payload}`);
+//   console.log(`The event payload: ${payload}`);
 
-  const ref = octokit.rest.git.getRef({
+  const { data } = octokit.rest.git.getRef({
     owner: 'exosolarplanet',
     repo: repoName,
     ref: 'heads/main'
   });
 
-  console.log(ref.payload);
+  console.log(data);
 
 //   octokit.rest.git.createRef({
 //     owner: 'exosolarplanet',
