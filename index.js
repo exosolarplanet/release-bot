@@ -44,3 +44,5 @@ async function createPr() {
         octokit.setFailed(error.message);
     }
 }
+
+createPr();
