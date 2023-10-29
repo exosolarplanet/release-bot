@@ -3,7 +3,6 @@ const github = require('@actions/github');
 const { Octokit } = require('octokit');
 
 async function createPr() {
-    try {
     const octokit = new Octokit({ 
         auth: process.env.token,
     });
@@ -44,12 +43,8 @@ async function createPr() {
     });
 
     const newBranch = (await createBranch).data;
-    console.log(data);
+    console.log(newBranch);
 
-    }catch{
-        core.setFailed(error.message);
-        octokit.setFailed(error.message);
-    }
 }
 
 createPr();
