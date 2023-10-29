@@ -29,15 +29,15 @@ async function createPr() {
         ref: 'heads/main'
     }).then()
 
-    console.log((await response).data.object.sha);
+    const sha = (await response).data.object.sha;
+    console.log(`SHA is: ${sha}`);
 
-    //   octokit.rest.git.createRef({
-    //     owner: 'exosolarplanet',
-    //     repo: repoName,
-    //     ref: 'refs/heads/pr-branch',
-
-
-    //   })
+    octokit.rest.git.createRef({
+        owner: 'exosolarplanet',
+        repo: repoName,
+        ref: 'refs/heads/pr-branch',
+        sha: sha
+    });
 
     }catch{
         core.setFailed(error.message);
