@@ -32,12 +32,15 @@ async function createPr() {
     const sha = (await response).data.object.sha;
     console.log(`SHA is: ${sha}`);
 
-    octokit.rest.git.createRef({
+    await octokit.request('POST /repos/{owner}/{repo}/git/refs', {
         owner: 'exosolarplanet',
         repo: repoName,
         ref: 'refs/heads/pr-branch',
-        sha: sha
-    });
+        sha: sha,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
 
     }catch{
         core.setFailed(error.message);
