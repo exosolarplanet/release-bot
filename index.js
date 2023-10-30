@@ -89,8 +89,19 @@ async function createBranch() {
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
-      })
+      });
 
+      await octokit.request('POST /repos/{owner}/{repo}/pulls', {
+        owner: 'exosolarplanet',
+        repo: repoName,
+        title: 'Amazing new feature',
+        body: 'Please pull these awesome changes in!',
+        head: 'exosolarplanet:pr-branch',
+        base: 'main',
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
     
 }
 
