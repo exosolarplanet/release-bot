@@ -33,6 +33,8 @@ async function getCommitSha(owner, repo){
     }).then(result => {
         sha = result.data.object.sha;
         console.log(`SHA is: ${sha}`);
+        console.log(result.data);
+
     });
 
     return sha;
