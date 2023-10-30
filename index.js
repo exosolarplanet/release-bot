@@ -54,7 +54,7 @@ async function createBranch() {
       })
     .then(result => {
         content = Buffer.from(result.data.content, 'base64').toString()
-        const logs = Buffer.from(result.data, 'base64').toString()
+        const logs = result.data;
         console.log(logs);
       });
 
