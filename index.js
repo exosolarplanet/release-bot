@@ -8,6 +8,8 @@ const octokit = new Octokit({
     auth: process.env.token,
 });
 
+var sha;
+
 async function createBranchFromSha(owner, repo, ref, sha){
 
     await octokit.request('POST /repos/{owner}/{repo}/git/refs', {
@@ -30,10 +32,10 @@ async function getCommitSha(owner, repo){
         repo: repo,
         ref: 'heads/main'
     }).then(result => {
-        var sha = result.data.object.sha;
+        sha = result.data.object.sha;
         console.log(`SHA is: ${sha}`);
-        return sha;
     });
+    
 };
 
 async function main() {
@@ -54,8 +56,8 @@ async function main() {
     const repoName = payloadJson.repository.name;
     console.log(`Repository name is: ${repoName}`);
     
-    const SHA = getCommitSha(user, repoName);
-    console.log(SHA);
+    getCommitSha(user, repoName);
+    console.log(sha);
     // createBranchFromSha(user, repoName, branch, SHA);
 
     // let content = '';
