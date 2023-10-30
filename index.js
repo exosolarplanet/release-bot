@@ -3,39 +3,6 @@ const github = require('@actions/github');
 const { Octokit } = require('octokit');
 const YAML = require('yaml');
 
-const octokit = new Octokit({ 
-    auth: process.env.token,
-});
-
-async function createBranchFromSha(owner, repo, ref, sha){
-
-    await octokit.request('POST /repos/{owner}/{repo}/git/refs', {
-        owner: owner,
-        repo: repo,
-        ref: `refs/heads/${ref}`,
-        sha: sha,
-        headers: {
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-    }).then(
-        console.log(`Created branch ${ref}`)
-    ); 
-};
-
-async function getCommitSha(owner, repo){
-
-    await octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
-        owner: owner,
-        repo: repo,
-        ref: 'heads/main'
-    }).then(result => {
-        let sha = result.data.object.sha;
-        console.log(`SHA is: ${sha}`);
-        return sha;
-    });
-    
-};
-
 async function main() {
 
     const user = 'exosolarplanet';
@@ -54,69 +21,87 @@ async function main() {
     const repoName = payloadJson.repository.name;
     console.log(`Repository name is: ${repoName}`);
     
-    const SHA = await getCommitSha(user, repoName);
-    console.log(SHA);
-    // await createBranchFromSha(user, repoName, branch, sha);
+    let sha = '';
+    await octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
+        owner: user,
+        repo: repoName,
+        ref: 'heads/main'
+    }).then(result => {
+        sha = result.data.object.sha;
+        console.log(`SHA is: ${sha}`);
+    });
 
-    // let content = '';
-    // let fileSHA = '';
-    // await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-    //     owner: 'exosolarplanet',
-    //     repo: repoName,
-    //     path: 'helm/Chart.yaml',
-    //     headers: {
-    //       'X-GitHub-Api-Version': '2022-11-28'
-    //     },
-    //     ref: 'pr-branch'
-    //   })
-    // .then(result => {
-    //     content = Buffer.from(result.data.content, 'base64').toString()
-    //     fileSHA = result.data.sha;
-    //     console.log(`Chart file SHA: ${fileSHA}`);
-    //   });
+    await octokit.request('POST /repos/{owner}/{repo}/git/refs', {
+        owner: user,
+        repo: repoName,
+        ref: `refs/heads/${branch}`,
+        sha: sha,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+    }).then(
+        console.log(`Created branch ${branch}`)
+    ); 
 
-    // const contentYaml = YAML.parse(content);
-    // const dependencies = contentYaml.dependencies;
+    let content = '';
+    let fileSHA = '';
+    await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+        owner: user,
+        repo: repoName,
+        path: 'helm/Chart.yaml',
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        },
+        ref: branch
+      })
+    .then(result => {
+        content = Buffer.from(result.data.content, 'base64').toString()
+        fileSHA = result.data.sha;
+        console.log(`Chart file SHA: ${fileSHA}`);
+      });
+
+    const contentYaml = YAML.parse(content);
+    const dependencies = contentYaml.dependencies;
     
-    // dependencies.forEach(iterate);
+    dependencies.forEach(iterate);
 
-    // function iterate(value){
-    //     if(value.name == imageName){
-    //         value.version = imageVersion;
-    //         console.log(contentYaml);
-    //     } // add else here to add a new entry to dependencies if the image doesn't exist
-    // }
+    function iterate(value){
+        if(value.name == imageName){
+            value.version = imageVersion;
+            console.log(contentYaml);
+        } // add else here to add a new entry to dependencies if the image doesn't exist
+    }
 
-    // const updatedContent = Buffer.from(YAML.stringify(contentYaml)).toString('base64');
+    const updatedContent = Buffer.from(YAML.stringify(contentYaml)).toString('base64');
 
-    // await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
-    //     owner: 'exosolarplanet',
-    //     repo: repoName,
-    //     path: 'helm/Chart.yaml',
-    //     message: 'Update Chart dependencies',
-    //     committer: {
-    //       name: 'exosolarplanet',
-    //       email: 'ecedenniz@gmail.com'
-    //     },
-    //     content: updatedContent, // need to convert to base64
-    //     sha: fileSHA,
-    //     branch: 'pr-branch',
-    //     headers: {
-    //       'X-GitHub-Api-Version': '2022-11-28'
-    //     }
-    //   });
+    await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+        owner: 'exosolarplanet',
+        repo: repoName,
+        path: 'helm/Chart.yaml',
+        message: 'Update Chart dependencies',
+        committer: {
+          name: 'exosolarplanet',
+          email: 'ecedenniz@gmail.com'
+        },
+        content: updatedContent, // need to convert to base64
+        sha: fileSHA,
+        branch: 'pr-branch',
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      });
 
-    //   await octokit.request('POST /repos/{owner}/{repo}/pulls', {
-    //     owner: 'exosolarplanet',
-    //     repo: repoName,
-    //     title: 'Amazing new feature',
-    //     body: 'Please pull these awesome changes in!',
-    //     head: 'exosolarplanet:pr-branch',
-    //     base: 'main',
-    //     headers: {
-    //       'X-GitHub-Api-Version': '2022-11-28'
-    //     }
-    //   })
+      await octokit.request('POST /repos/{owner}/{repo}/pulls', {
+        owner: 'exosolarplanet',
+        repo: repoName,
+        title: 'Amazing new feature',
+        body: 'Please pull these awesome changes in!',
+        head: 'exosolarplanet:pr-branch',
+        base: 'main',
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
     
 }
 
