@@ -3,10 +3,29 @@ const github = require('@actions/github');
 const { Octokit } = require('octokit');
 const YAML = require('yaml');
 
+async function createBranch(owner, repo, ref, sha){
+
+    await octokit.request('POST /repos/{owner}/{repo}/git/refs', {
+        owner: owner,
+        repo: repo,
+        ref: `refs/heads/${ref}`,
+        sha: sha,
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+    }).then(result => {
+        console.log(result.data)
+    });
+    
+};
+
 async function main() {
     const octokit = new Octokit({ 
         auth: process.env.token,
     });
+
+    const user = 'exosolarplanet';
+    const branch = 'pr-branch';
 
     const imageName = core.getInput('image_name');
     console.log(`Image name is: ${imageName}`);
@@ -29,20 +48,9 @@ async function main() {
     }).then(result => {
         sha = result.data.object.sha;
         console.log(`SHA is: ${sha}`);
-    })
+    });
 
-    // const createBranch = octokit.request('POST /repos/{owner}/{repo}/git/refs', {
-    //     owner: 'exosolarplanet',
-    //     repo: repoName,
-    //     ref: 'refs/heads/pr-branch',
-    //     sha: sha,
-    //     headers: {
-    //       'X-GitHub-Api-Version': '2022-11-28'
-    //     }
-    // });
-
-    // const newBranch = (await createBranch).data;
-    // console.log(newBranch);
+    createBranch(user, repoName, branch, sha);
 
     let content = '';
     let fileSHA = '';
