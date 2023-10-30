@@ -8,8 +8,6 @@ const octokit = new Octokit({
     auth: process.env.token,
 });
 
-// let sha = '';
-
 async function createBranchFromSha(owner, repo, ref, sha){
 
     await octokit.request('POST /repos/{owner}/{repo}/git/refs', {
