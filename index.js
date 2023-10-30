@@ -3,7 +3,7 @@ const github = require('@actions/github');
 const { Octokit } = require('octokit');
 const YAML = require('yaml');
 
-async function createBranch() {
+async function main() {
     const octokit = new Octokit({ 
         auth: process.env.token,
     });
@@ -21,14 +21,15 @@ async function createBranch() {
     const repoName = payloadJson.repository.name;
     console.log(`Repository name is: ${repoName}`);
 
-    const response = octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
+    let sha = '';
+    await octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
         owner: 'exosolarplanet',
         repo: repoName,
         ref: 'heads/main'
-    });
-
-    const sha = (await response).data.object.sha;
-    console.log(`SHA is: ${sha}`);
+    }).then(result => {
+        sha = result.data.object.sha;
+        console.log(`SHA is: ${sha}`);
+    })
 
     // const createBranch = octokit.request('POST /repos/{owner}/{repo}/git/refs', {
     //     owner: 'exosolarplanet',
@@ -105,4 +106,4 @@ async function createBranch() {
     
 }
 
-createBranch();
+main();
