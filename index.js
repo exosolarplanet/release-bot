@@ -42,6 +42,8 @@ async function createBranch() {
 
     // const newBranch = (await createBranch).data;
     // console.log(newBranch);
+    let content = '';
+    let contentYaml = '';
     await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
         owner: 'exosolarplanet',
         repo: repoName,
@@ -52,12 +54,11 @@ async function createBranch() {
       })
     .then(result => {
         // content will be base64 encoded
-        const content = Buffer.from(result.data.content, 'base64').toString()
-        let contentYaml = YAML.parse(content);
-        console.log(contentYaml.name);
-
+        content = Buffer.from(result.data.content, 'base64').toString()
+        contentYaml = YAML.parse(content);
         // console.log(content)
       });
+    console.log(contentYaml.name);
 
     // let contentYaml = YAML.parse(content);
     // console.log(contentYaml);
