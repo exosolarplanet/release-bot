@@ -67,7 +67,7 @@ async function createBranch() {
         } // add else here to add a new entry to dependencies if the image doesn't exist
     }
 
-    const updatedContent = Buffer.from('base64', YAML.stringify(contentYaml));
+    const updatedContent = Buffer.from(YAML.stringify(contentYaml)).toString('base64');
 
     await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
         owner: 'exosolarplanet',
