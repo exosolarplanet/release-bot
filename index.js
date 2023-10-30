@@ -63,9 +63,27 @@ async function createBranch() {
     function iterate(value){
         if(value.name == imageName){
             value.version = imageVersion;
-            console.log(dependencies);
+            console.log(contentYaml);
         }
     }
+
+
+
+    await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+        owner: 'exosolarplanet',
+        repo: repoName,
+        path: 'helm/Chart.yaml',
+        message: 'Update Chart dependencies',
+        committer: {
+          name: 'exosolarplanet',
+          email: 'ecedenniz@gmail.com'
+        },
+        content: content, // need to convert to base64
+        headers: {
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      })
+
     
 }
 
