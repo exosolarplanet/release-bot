@@ -52,16 +52,21 @@ async function createBranch() {
         }
       })
     .then(result => {
-        // content will be base64 encoded
         content = Buffer.from(result.data.content, 'base64').toString()
-        // console.log(content)
       });
 
-    let contentYaml = YAML.parse(content);
-    console.log((contentYaml.dependencies).length);
+    const contentYaml = YAML.parse(content);
+    const dependencies = contentYaml.dependencies;
+    const dependenciesLength = dependencies.length;
+    
+    dependencies.forEach(iterate);
 
-    // let contentYaml = YAML.parse(content);
-    // console.log(contentYaml);
+    function iterate(value){
+        if(value.name == imageName){
+        console.log(imageName);
+        }
+    }
+    
 }
 
 createBranch();
