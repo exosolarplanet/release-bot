@@ -79,6 +79,7 @@ async function createBranch() {
           email: 'ecedenniz@gmail.com'
         },
         content: updatedContent, // need to convert to base64
+        sha: sha,
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
