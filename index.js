@@ -25,13 +25,12 @@ async function createBranchFromSha(owner, repo, ref, sha){
 
 async function getCommitSha(owner, repo){
 
-    let sha = '';
     await octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
         owner: owner,
         repo: repo,
         ref: 'heads/main'
     }).then(result => {
-        sha = result.data.object.sha;
+        var sha = result.data.object.sha;
         console.log(`SHA is: ${sha}`);
         return sha;
     });
