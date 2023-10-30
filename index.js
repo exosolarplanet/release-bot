@@ -64,10 +64,10 @@ async function createBranch() {
         if(value.name == imageName){
             value.version = imageVersion;
             console.log(contentYaml);
-        }
+        } // add else here to add a new entry to dependencies if the image doesn't exist
     }
 
-
+    const updatedContent = Buffer.from('base64', YAML.stringify(contentYaml));
 
     await octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
         owner: 'exosolarplanet',
@@ -78,7 +78,7 @@ async function createBranch() {
           name: 'exosolarplanet',
           email: 'ecedenniz@gmail.com'
         },
-        content: content, // need to convert to base64
+        content: updatedContent, // need to convert to base64
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
