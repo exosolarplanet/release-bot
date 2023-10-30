@@ -57,13 +57,13 @@ async function createBranch() {
 
     const contentYaml = YAML.parse(content);
     const dependencies = contentYaml.dependencies;
-    const dependenciesLength = dependencies.length;
     
     dependencies.forEach(iterate);
 
     function iterate(value){
         if(value.name == imageName){
-        console.log(imageName);
+            value.version = imageVersion;
+            console.log(dependencies);
         }
     }
     
