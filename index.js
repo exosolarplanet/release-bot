@@ -56,8 +56,8 @@ async function createBranch() {
       })
     .then(result => {
         content = Buffer.from(result.data.content, 'base64').toString()
-        fileSha = result.data.sha;
-        console.log(`Chart file SHA: ${fileSha}`);
+        fileSHA = result.data.sha;
+        console.log(`Chart file SHA: ${fileSHA}`);
       });
 
     const contentYaml = YAML.parse(content);
