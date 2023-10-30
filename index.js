@@ -54,7 +54,7 @@ async function main() {
     const repoName = payloadJson.repository.name;
     console.log(`Repository name is: ${repoName}`);
     
-    await getCommitSha(user, repoName);
+    const sha = await getCommitSha(user, repoName);
     await createBranchFromSha(user, repoName, branch, sha);
 
     // let content = '';
