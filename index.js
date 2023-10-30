@@ -58,7 +58,7 @@ async function createBranch() {
       });
 
     let contentYaml = YAML.parse(content);
-    console.log(contentYaml.dependencies[0]);
+    console.log((contentYaml.dependencies).length);
 
     // let contentYaml = YAML.parse(content);
     // console.log(contentYaml);
