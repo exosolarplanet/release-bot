@@ -50,7 +50,8 @@ async function createBranch() {
         path: 'helm/Chart.yaml',
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
-        }
+        },
+        ref: 'pr-branch'
       })
     .then(result => {
         content = Buffer.from(result.data.content, 'base64').toString()
