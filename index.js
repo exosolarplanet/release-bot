@@ -8,7 +8,7 @@ const octokit = new Octokit({
     auth: process.env.token,
 });
 
-let sha = '';
+// let sha = '';
 
 async function createBranchFromSha(owner, repo, ref, sha){
 
@@ -34,6 +34,7 @@ async function getCommitSha(owner, repo){
     }).then(result => {
         sha = result.data.object.sha;
         console.log(`SHA is: ${sha}`);
+        return sha;
     });
     
 };
