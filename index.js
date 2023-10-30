@@ -73,7 +73,7 @@ async function main() {
             value.version = imageVersion;
             console.log(contentYaml);
         } // add else here to add a new entry to dependencies if the image doesn't exist
-    }
+    };
 
     const updatedContent = Buffer.from(YAML.stringify(contentYaml)).toString('base64');
 
@@ -110,28 +110,15 @@ async function main() {
         console.log(prNumber);
     });
 
-    await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews', {
+    await octokit.request('PUT /repos/{owner}/{repo}/pulls/{pull_number}/merge', {
         owner: user,
         repo: repoName,
         pull_number: prNumber,
-        body: 'This is close to perfect! Please address the suggested inline change.',
-        event: 'APPROVE',
         headers: {
-        'X-GitHub-Api-Version': '2022-11-28'
+          'X-GitHub-Api-Version': '2022-11-28'
         }
-    });
+      });
 
-    // await octokit.request('POST /repos/{owner}/{repo}/pulls/{pull_number}/reviews/{review_id}/events', {
-    //     owner: user,
-    //     repo: repoName,
-    //     pull_number: prNumber,
-    //     review_id: 'REVIEW_ID',
-    //     body: 'Here is the body for the review.',
-    //     event: 'REQUEST_CHANGES',
-    //     headers: {
-    //         'X-GitHub-Api-Version': '2022-11-28'
-    //     }
-    // });
 }
 
 main();
