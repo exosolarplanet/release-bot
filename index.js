@@ -3,7 +3,6 @@ const github = require('@actions/github');
 const { Octokit } = require('octokit');
 const YAML = require('yaml');
 
-
 const octokit = new Octokit({ 
     auth: process.env.token,
 });
@@ -30,7 +29,7 @@ async function getCommitSha(owner, repo){
         repo: repo,
         ref: 'heads/main'
     }).then(result => {
-        sha = result.data.object.sha;
+        let sha = result.data.object.sha;
         console.log(`SHA is: ${sha}`);
         return sha;
     });
@@ -56,8 +55,7 @@ async function main() {
     console.log(`Repository name is: ${repoName}`);
     
     await getCommitSha(user, repoName);
-    console.log(sha);
-    // createBranchFromSha(user, repoName, branch, SHA);
+    await createBranchFromSha(user, repoName, branch, sha);
 
     // let content = '';
     // let fileSHA = '';
