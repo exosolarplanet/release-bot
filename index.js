@@ -44,6 +44,7 @@ async function createBranch() {
     // console.log(newBranch);
 
     let content = '';
+    let fileSHA = '';
     await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
         owner: 'exosolarplanet',
         repo: repoName,
@@ -55,8 +56,8 @@ async function createBranch() {
       })
     .then(result => {
         content = Buffer.from(result.data.content, 'base64').toString()
-        const logs = result.data;
-        console.log(logs);
+        fileSha = result.data.sha;
+        console.log(`Chart file SHA: ${fileSha}`);
       });
 
     const contentYaml = YAML.parse(content);
@@ -83,7 +84,7 @@ async function createBranch() {
           email: 'ecedenniz@gmail.com'
         },
         content: updatedContent, // need to convert to base64
-        sha: sha,
+        sha: fileSHA,
         branch: 'pr-branch',
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
