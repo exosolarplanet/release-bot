@@ -4,7 +4,10 @@ const { Octokit } = require('octokit');
 const YAML = require('yaml');
 
 async function main() {
-
+    const octokit = new Octokit({ 
+        auth: process.env.token,
+    });
+    
     const user = 'exosolarplanet';
     const branch = 'pr-branch';
 
