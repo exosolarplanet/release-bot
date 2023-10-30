@@ -8,7 +8,7 @@ const octokit = new Octokit({
     auth: process.env.token,
 });
 
-async function createBranch(owner, repo, ref, sha){
+async function createBranchFromSha(owner, repo, ref, sha){
 
     await octokit.request('POST /repos/{owner}/{repo}/git/refs', {
         owner: owner,
@@ -18,16 +18,27 @@ async function createBranch(owner, repo, ref, sha){
         headers: {
           'X-GitHub-Api-Version': '2022-11-28'
         }
+    }).then(
+        console.log(`Created branch ${ref}`)
+    ); 
+};
+
+async function getCommitSha(user, repo){
+
+    let sha = '';
+    await octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
+        owner: user,
+        repo: repo,
+        ref: 'heads/main'
     }).then(result => {
-        console.log(result.data)
+        sha = result.data.object.sha;
+        console.log(`SHA is: ${sha}`);
     });
-    
+
+    return sha;
 };
 
 async function main() {
-    const octokit = new Octokit({ 
-        auth: process.env.token,
-    });
 
     const user = 'exosolarplanet';
     const branch = 'pr-branch';
@@ -44,18 +55,9 @@ async function main() {
     const payloadJson = github.context.payload;
     const repoName = payloadJson.repository.name;
     console.log(`Repository name is: ${repoName}`);
-
-    let sha = '';
-    await octokit.request('GET /repos/{owner}/{repo}/git/refs/{ref}', {
-        owner: 'exosolarplanet',
-        repo: repoName,
-        ref: 'heads/main'
-    }).then(result => {
-        sha = result.data.object.sha;
-        console.log(`SHA is: ${sha}`);
-    });
-
-    createBranch(user, repoName, branch, sha);
+    
+    const sha = getCommitSha(user, repoName);
+    createBranchFromSha(user, repoName, branch, sha);
 
     let content = '';
     let fileSHA = '';
