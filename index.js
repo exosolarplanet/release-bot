@@ -3,6 +3,11 @@ const github = require('@actions/github');
 const { Octokit } = require('octokit');
 const YAML = require('yaml');
 
+
+const octokit = new Octokit({ 
+    auth: process.env.token,
+});
+
 async function createBranch(owner, repo, ref, sha){
 
     await octokit.request('POST /repos/{owner}/{repo}/git/refs', {
