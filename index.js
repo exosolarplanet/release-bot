@@ -57,7 +57,8 @@ async function main() {
     console.log(`Repository name is: ${repoName}`);
     
     const SHA = getCommitSha(user, repoName);
-    createBranchFromSha(user, repoName, branch, SHA);
+    console.log(SHA);
+    // createBranchFromSha(user, repoName, branch, SHA);
 
     // let content = '';
     // let fileSHA = '';
