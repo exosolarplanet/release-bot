@@ -8,7 +8,7 @@ const octokit = new Octokit({
     auth: process.env.token,
 });
 
-var sha;
+let sha = '';
 
 async function createBranchFromSha(owner, repo, ref, sha){
 
